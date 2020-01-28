@@ -3,22 +3,22 @@ import java.util.*;
 public class FriendsCounter {
     public static int countFriends(String[] listOfRelationships,String name) {
         ArrayList<String> listOfNames = new ArrayList<>();
-        HashSet<String> setOfNonRepeatingNames = new HashSet<>();
         HashSet<String> setOfFriends = new HashSet<>();
         HashMap<String,ArrayList<String>> mapOfRelationships = new HashMap<>();
 
 
-        for (int i = 0; i < listOfRelationships.length; i++) {
-            String[] tempArrayOfNames = listOfRelationships[i].split(":");
+        for (String listOfRelationship : listOfRelationships) {
+            String[] tempArrayOfNames = listOfRelationship.split(":");
             listOfNames.addAll(Arrays.asList(tempArrayOfNames));
         }
 
-        setOfNonRepeatingNames.addAll(listOfNames);
+        HashSet<String> setOfNonRepeatingNames = new HashSet<>(listOfNames);
         Iterator<String> it = setOfNonRepeatingNames.iterator();
+
         for (int i = 0; i < setOfNonRepeatingNames.size(); i++) {
-            String currentName;
+            String currentName = it.next();
             ArrayList<String> friends = new ArrayList<>();
-            currentName = it.next();
+
             for (int j = 0; j < listOfNames.size(); j+=2) {
                 if (currentName.equals(listOfNames.get(j))) {
                     friends.add(listOfNames.get(j+1));
@@ -37,18 +37,16 @@ public class FriendsCounter {
 
     public static void addFriends(Map<String, ArrayList<String>> mapOfRelationships, Set<String> setOfFriends,
                                   String name,String previousFriend) {
-        Iterator<Map.Entry<String, ArrayList<String>>> mapIterator = mapOfRelationships.entrySet().iterator();
 
-        while (mapIterator.hasNext()) {
-            Map.Entry<String, ArrayList<String>> pair = mapIterator.next();
-
+        for (Map.Entry<String, ArrayList<String>> pair : mapOfRelationships.entrySet()) {
             if (!pair.getKey().equals(name)) {
                 continue;
             }
-            HashSet<String> previousSetOfFriends = new HashSet<>(setOfFriends);
 
+            HashSet<String> previousSetOfFriends = new HashSet<>(setOfFriends);
             ArrayList<String> tempFriends = pair.getValue();
-            for (String friend:tempFriends) {
+
+            for (String friend : tempFriends) {
                 if (friend.equals(name) || friend.equals(previousFriend)) {
                     continue;
                 }
@@ -57,11 +55,10 @@ public class FriendsCounter {
 
             HashSet<String> tempHashSet = new HashSet<>(setOfFriends);
             tempHashSet.removeAll(previousSetOfFriends);
-            Iterator<String> setIt2 = tempHashSet.iterator();
-            while (setIt2.hasNext()) {
-                addFriends(mapOfRelationships,setOfFriends,setIt2.next(),name);
-            }
 
+            for (String s : tempHashSet) {
+                addFriends(mapOfRelationships, setOfFriends, s, name);
+            }
         }
     }
 }

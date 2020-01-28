@@ -9,9 +9,9 @@ public class Test {
                 "gevorg:vazgen",
                 "tiko:yervand",
                 "mxo:ani",
-                "vazgen:sam",
-                "sam:aram"
+                "vazgen:zaven",
+                "zaven:aram"
         };
-        System.out.println(FriendsCounter.countFriends(friends, "vazgen"));
+        System.out.println(FriendsCounter.countFriends(friends, "aram"));
     }
 }
